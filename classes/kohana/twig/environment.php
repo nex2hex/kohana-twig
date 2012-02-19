@@ -20,7 +20,7 @@ class Kohana_Twig_Environment
 	{
 		static $instances;
 
-		if (!isset($instances[$env]))
+		if ( ! isset($instances[$env]))
 		{
 			$config = Kohana::$config->load('twig.'.$env);
 			
