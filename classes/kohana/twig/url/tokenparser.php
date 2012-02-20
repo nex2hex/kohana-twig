@@ -16,24 +16,31 @@ class Kohana_Twig_URL_TokenParser extends Twig_TokenParser
 	public function parse(Twig_Token $token)
 	{
 		$lineno = $token->getLine();
+		$stream = $this->parser->getStream();
 
 		// Find the route we're matching
 		$route = $this->parser->getExpressionParser()->parseExpression();
+		$params = FALSE;
+		$urlconf = FALSE;
 
 		// Check for arguments for the route
-		if ($this->parser->getStream()->test(Twig_Token::PUNCTUATION_TYPE, ','))
+		if ($stream->test(Twig_Token::PUNCTUATION_TYPE, ','))
 		{
-			$this->parser->getStream()->expect(Twig_Token::PUNCTUATION_TYPE, ',');
+			$stream->expect(Twig_Token::PUNCTUATION_TYPE, ',');
 			$params = $this->parser->getExpressionParser()->parseExpression();
-		}
-		else
-		{
-			$params = FALSE;
+
+			if ($stream->test(Twig_Token::PUNCTUATION_TYPE, ','))
+			{
+				$stream->expect(Twig_Token::PUNCTUATION_TYPE, ',');
+				$urlconf = $this->parser->getExpressionParser()->parseExpression();
+			}
 		}
 				
-		$this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
+		$stream->expect(Twig_Token::BLOCK_END_TYPE);
 
-		return new Kohana_Twig_URL_Node(array('route' => $route, 'params' => $params), array(), $lineno, $this->getTag());
+		$opt = array('route' => $route, 'params' => $params, 'urlconf' => $urlconf);
+
+		return new Kohana_Twig_URL_Node($opt, array(), $lineno, $this->getTag());
 	}
 	
 	/**

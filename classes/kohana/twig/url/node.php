@@ -17,11 +17,15 @@ class Kohana_Twig_Url_Node extends Twig_Node
 	 */
 	public function compile(Twig_Compiler $compiler)
 	{
-		if ($this->getNode('params'))
+		$params = $this->getNode('params');
+
+		$urlconf = $this->getNode('urlconf');
+
+		if ($params)
 		{
 			$compiler
 				->write('$route_params = ')
-				->subcompile($this->getNode('params'))
+				->subcompile($params)
 				->raw(";\n");
 		}
 		else
@@ -33,9 +37,16 @@ class Kohana_Twig_Url_Node extends Twig_Node
 
 		// Output the route
 		$compiler
-			->write('echo Kohana::$base_url.Route::get(')
+			->write('echo Route::url(')
 			->subcompile($this->getNode('route'))
-			->write(')->uri($route_params)')
-			->raw(";\n");
+			->write(', $route_params');
+
+		if ($urlconf)
+		{
+			$compiler
+				->write(', NULL, ')
+				->subcompile($urlconf);
+		}
+		$compiler->raw(");\n");
 	}
 }
