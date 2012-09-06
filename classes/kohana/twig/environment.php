@@ -1,8 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-// Register the Twig class autoloader
-Twig_Autoloader::register();
-
 /**
  * Twig Loader
  *
@@ -12,10 +9,10 @@ Twig_Autoloader::register();
 class Kohana_Twig_Environment
 {
 	/**
-	 * Loads Twig_Environments based on the 
+	 * Loads Twig_Environments based on the
 	 * configuration key they represent
 	 *
-	 * @param string $env 
+	 * @param string $env
 	 * @return Twig_Environment
 	 * @author Jonathan Geiger
 	 */
@@ -26,7 +23,7 @@ class Kohana_Twig_Environment
 		if ( ! isset($instances[$env]))
 		{
 			$config = Kohana::$config->load('twig.'.$env);
-			
+
 			// Create the the loader
 			$twig_loader = $config['loader']['class'];
 			$loader = new $twig_loader($config['loader']['options']);
@@ -63,7 +60,7 @@ class Kohana_Twig_Environment
 
 		return $instances[$env];
 	}
-	
+
 	final private function __construct()
 	{
 		// This is a static class
