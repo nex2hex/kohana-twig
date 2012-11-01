@@ -1,8 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-// Register the Twig class autoloader
-Twig_Autoloader::register();
-
 /**
  * Twig Loader
  *
