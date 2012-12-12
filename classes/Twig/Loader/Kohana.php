@@ -66,7 +66,7 @@ class Twig_Loader_Kohana implements Twig_LoaderInterface
 		if (FALSE === $path)
 		{
 			throw new Kohana_Exception('Unable to find template: :template.',
-				array('template' => $name));
+				array(':template' => $name));
 		}
 
 		return $path;
